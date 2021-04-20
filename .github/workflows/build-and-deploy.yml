@@ -31,7 +31,7 @@ jobs:
 
     
     - name: Python Application Build Notification
-      uses: sroopsai/slack@v1
+      uses: sroopsai/slack@master
       with:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
@@ -63,7 +63,7 @@ jobs:
       run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
 
     - name: Docker Application Build Notification
-      uses: sroopsai/slack@v1
+      uses: sroopsai/slack@master
       with:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
