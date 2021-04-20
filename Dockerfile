@@ -7,6 +7,6 @@ COPY ./server.py ./server.py
 COPY ./commandhandler.py ./commandhandler.py
 # Exposes at port 8088
 EXPOSE 8088
-RUN ["python3", "server.py"] 
+CMD ["python3", "server.py"] 
 
 
