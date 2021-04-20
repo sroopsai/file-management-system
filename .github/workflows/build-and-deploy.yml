@@ -46,14 +46,13 @@ jobs:
     needs:
       - build-docker-app
     steps:
-      - name: Post the status to slack
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_USERNAME: 'ATG-SLACK-BOT'
-          SLACK_MSG_AUTHOR: ${{ GITHUB_ACTOR }}
-          SLACK_COLOR: ${{job.status}}
-          SLACK_FOOTER: 'Powered by Roop Sai'
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+        if: always()
+        env: 
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          
 
 
 
