@@ -24,7 +24,7 @@ jobs:
     - name: Unit Testing
       run: |
         python tests.py
-        
+
   build-docker-app:
 
     runs-on: ubuntu-latest
@@ -38,5 +38,21 @@ jobs:
         dockerfile: Dockerfile
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
+
+  slack-workflow-notification:
+    if: ${{ github.event.pull_request.merged }} == true
+    runs-on: ubuntu-latest
+    name: Slack Workflow Notification
+    needs:
+      - build-docker-app
+    steps:
+      - name: Post the status to slack
+        uses: Gamesight/slack-workflow-status@master
+        with:
+          slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
+          
+      
+
+
 
     
