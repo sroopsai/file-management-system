@@ -54,7 +54,7 @@ jobs:
       with:
         dockerfile: Dockerfile
     - name: Build the Docker image
-      id: Build-the-Docker image
+      id: Build-the-Docker-image
       run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
 
     - name: Docker Application Build Notification
