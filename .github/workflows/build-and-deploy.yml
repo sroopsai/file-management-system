@@ -47,10 +47,15 @@ jobs:
       - build-docker-app
     steps:
       - name: Post the status to slack
-        uses: Gamesight/slack-workflow-status@master
-        with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: 'ATG-SLACK-BOT'
+          SLACK_MSG_AUTHOR: $GITHUB_ACTOR
+          SLACK_COLOR: ${{job.status}}
+          SLACK_FOOTER: 'Powered by Roop Sai'
+          
+
 
       
 
