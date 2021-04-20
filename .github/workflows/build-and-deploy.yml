@@ -58,10 +58,40 @@ jobs:
       uses: hadolint/hadolint-action@v1.4.0
       with:
         dockerfile: Dockerfile
-    - name: Build the Docker image
-      id: Build-the-Docker-image
-      run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
+    - name: 'Login via Azure CLI'
+      id: Login-To-Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: 'Build and push image'
+      id: Build-And-Push-Image-Into-ACR
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      run: |
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/filemanagementapp:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/filemanagementapp:${{ github.sha }}
+
+    - name: 'Deploy to Azure Container Instances'
+      id: Deploy-To-ACI
+      uses: 'azure/aci-deploy@v1'
+      with:
+        resource-group: ${{ secrets.RESOURCE_GROUP }}
+        dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+        image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+        registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        name: aci-filemanagementapp
+        location: 'north europe'
+
+      
+
+    
     - name: Docker Application Build Notification
       uses: sroopsai/slack@v1.2.5
       with:
