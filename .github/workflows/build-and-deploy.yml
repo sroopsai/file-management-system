@@ -46,17 +46,14 @@ jobs:
     needs:
       - build-docker-app
     steps:
-      - uses: 8398a7/action-slack@v3
+      - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}
-          author_name: 'ATG-SLACK-GITHUB-BOT'
-          icon_emoji: ':rocket:'
-          job_name: Slack Workflow Notification
-          fields: repo, commit, eventName, ref, workflow, message, author, job
+        if: always()
         env: 
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          MATIX_CONTEXT: ${{ toJson(matrix )}}
           
+
 
 
       
