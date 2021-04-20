@@ -13,12 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: hadolint/hadolint-action@v1.4.0
+    - uses: actions/checkout@v2
     - name: Lint Dockerfile
+      uses: hadolint/hadolint-action@v1.4.0
       with:
         dockerfile: Dockerfile
-    
-    - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
 
