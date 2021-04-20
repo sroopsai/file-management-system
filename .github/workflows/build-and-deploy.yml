@@ -33,6 +33,7 @@ jobs:
       uses: Gamesight/slack-workflow-status@v1.0.1
       with:
         slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
+        repo_token: ${{ secrets.REPO_TOKEN }}
 
 
 
