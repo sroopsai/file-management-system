@@ -25,6 +25,20 @@ jobs:
       run: |
         python tests.py
 
+    
+    - name: Python Application Build Notification
+      uses: act10ns/slack@v1
+      with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+      if: always()
+      env: 
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+
+
+
   build-docker-app:
 
     runs-on: ubuntu-latest
@@ -39,19 +53,16 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
 
-  slack-workflow-notification:
-    if: ${{ github.event.pull_request.merged }} == true
-    runs-on: ubuntu-latest
-    name: Slack Workflow Notification
-    needs:
-      - build-docker-app
-    steps:
-      - uses: act10ns/slack@v1
-        with:
+    - name: Docker Application Build Notification
+      uses: act10ns/slack@v1
+      with:
           status: ${{ job.status }}
-        if: always()
-        env: 
+          steps: ${{ toJson(steps) }}
+      if: always()
+      env: 
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  
+        
           
 
 
