@@ -51,10 +51,10 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: 'ATG-SLACK-BOT'
-          SLACK_MSG_AUTHOR: $GITHUB_ACTOR
+          SLACK_MSG_AUTHOR: ${{ GITHUB_ACTOR }}
           SLACK_COLOR: ${{job.status}}
           SLACK_FOOTER: 'Powered by Roop Sai'
-          
+
 
 
       
