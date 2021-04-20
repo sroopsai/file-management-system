@@ -47,7 +47,10 @@ jobs:
     needs: 
       - build-python-app
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      id: Checkout
+      uses: actions/checkout@v2
+      
     - name: Lint Dockerfile
       id: Lint-the-Dockerfile
       uses: hadolint/hadolint-action@v1.4.0
