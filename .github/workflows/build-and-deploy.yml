@@ -29,12 +29,14 @@ jobs:
         python tests.py
 
     
-    - name: Docker Application Build Notification
-      uses: Gamesight/slack-workflow-status@v1.0.1
-      if: always()
+    - name: Python Application Build Notification
+      uses: sroopsai/slack@v1
       with:
-        slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+      if: always()
+      env: 
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
 
@@ -60,11 +62,13 @@ jobs:
       run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
 
     - name: Docker Application Build Notification
-      uses: Gamesight/slack-workflow-status@v1.0.1
-      if: always()
+      uses: sroopsai/slack@v1
       with:
-        slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+      if: always()
+      env: 
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   
         
           
