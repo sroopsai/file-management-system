@@ -27,6 +27,7 @@ async def tcp_client():
         if message.lower() == "quit":
             break
     print('Close the connection')
+    print('Editor siva')
     writer.close()
 
 asyncio.run(tcp_client())
