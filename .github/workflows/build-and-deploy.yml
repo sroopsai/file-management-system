@@ -19,10 +19,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Analyse code with pylint
+      id: Python-App-Linting
       run: |
         find . -name '*.py' -exec pylint {} \;
     - name: Unit Testing
-      id: Testing the Python Application
+      id: Testing-Python-Application
       run: |
         python tests.py
 
@@ -46,14 +47,17 @@ jobs:
     needs: 
       - build-python-app
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      id: Checkout
+      uses: actions/checkout@v2
+      
     - name: Lint Dockerfile
-      id: Lint the Dockerfile
+      id: Lint-the-Dockerfile
       uses: hadolint/hadolint-action@v1.4.0
       with:
         dockerfile: Dockerfile
     - name: Build the Docker image
-      id: Build the Docker image
+      id: Build-the-Docker-image
       run: docker build . --file Dockerfile --tag file-system-server:$(date +%s)
 
     - name: Docker Application Build Notification
