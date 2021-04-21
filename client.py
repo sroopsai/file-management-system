@@ -7,13 +7,17 @@ user commands are executed as per the CommandHandler class
 The connection is closed based on the user request
 '''
 import asyncio
+import sys
 
 async def tcp_client():
     '''
     This function establishes the TCP connection between the server and the client
     '''
+    ip = sys.argv[1].split(":")[0]
+    port = int(sys.argv[1].split(":")[1])
+    
     reader, writer = await asyncio.open_connection(
-        '127.0.0.1', 8088)
+        ip, port)
     message = ''
     while True:
         message = input("$")
