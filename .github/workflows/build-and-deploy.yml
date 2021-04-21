@@ -1,4 +1,4 @@
-name: Build And Deploy
+name: Test And Build
 on:
   push:
     branches: [ master ]
@@ -33,11 +33,20 @@ jobs:
     - name: Python Application Build Notification
       uses: sroopsai/slack@v1.2.5
       with:
-          status: ${{ job.status }}
-          steps: ${{ toJson(steps) }}
+        status: ${{ job.status }}
+        steps: ${{ toJson(steps) }}
       if: always()
       env: 
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    - name: Python Application Build Notification 
+      uses: sroopsai/slack@v1.2.5
+      with: 
+        status: ${{ job.status }}
+        steps: ${{ toJson(steps) }}
+      if: always()
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL2 }}
 
 
 
@@ -49,48 +58,19 @@ jobs:
     needs: 
       - build-python-app
     steps:
-    - name: Checkout
-      id: Checkout
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
     - name: Lint Dockerfile
       id: Lint-the-Dockerfile
       uses: hadolint/hadolint-action@v1.4.0
       with:
         dockerfile: Dockerfile
-    - name: 'Login via Azure CLI'
-      id: Login-To-Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+   
 
-    - name: 'Build and push image'
-      id: Build-And-Push-Image-Into-ACR
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-
+    - name: Build Docker
+      id: Build-Docker-Image
       run: |
-        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/filemanagementapp:${{ github.sha }}
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/filemanagementapp:${{ github.sha }}
-
-    - name: 'Deploy to Azure Container Instances'
-      id: Deploy-To-ACI
-      uses: 'azure/aci-deploy@v1'
-      with:
-        resource-group: ${{ secrets.RESOURCE_GROUP }}
-        dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
-        image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
-        registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-        registry-username: ${{ secrets.REGISTRY_USERNAME }}
-        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        name: aci-filemanagementapp
-        location: 'north europe'
-
-      
-
+        docker build . -t filemanagerapp:latest
     
     - name: Docker Application Build Notification
       uses: sroopsai/slack@v1.2.5
@@ -100,6 +80,15 @@ jobs:
       if: always()
       env: 
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    - name: Docker Application Build Notification
+      uses: sroopsai/slack@v1.2.5
+      with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+      if: always()
+      env: 
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL2 }}
   
         
           
