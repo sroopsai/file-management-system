@@ -48,10 +48,6 @@ jobs:
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL2 }}
 
-
-
-
-
   build-docker-app:
 
     runs-on: ubuntu-latest
@@ -90,8 +86,22 @@ jobs:
       env: 
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL2 }}
   
-        
-          
+  create-azure-vm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: actions/checkout@v2
+        uses: actions/checkout@v2
+
+      - name: RunPoweshellScriptFromRepo
+        env:
+          SP_CLIENT_ID: ${{ secrets.SP_CLIENT_ID}}
+          SP_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
+          SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
+          AZURE_SUBSCRIPTION_NAME: ${{ secrets.AZURE_SUBSCRIPTION_NAME }}        
+        run: .\create-vm-.ps1
+        shell: pwsh
+
 
 
 
