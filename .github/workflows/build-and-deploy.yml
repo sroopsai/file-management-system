@@ -48,10 +48,6 @@ jobs:
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL2 }}
 
-
-
-
-
   build-docker-app:
 
     runs-on: ubuntu-latest
@@ -90,9 +86,46 @@ jobs:
       env: 
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL2 }}
   
-        
-          
+  create-azure-vm:
+    runs-on: ubuntu-latest
+    needs: build-python-app
+    steps:
+      - name: actions/checkout@v2
+        uses: actions/checkout@v2
 
+      - name: RunPoweshellScriptFromRepo
+        id: Create-Azure-Server
+        env:
+          SP_CLIENT_ID: ${{ secrets.SP_CLIENT_ID}}
+          SP_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
+          SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
+          AZURE_SUBSCRIPTION_NAME: ${{ secrets.AZURE_SUBSCRIPTION_NAME }}        
+        run: .\create-vm-azure.ps1
+        shell: pwsh
+
+      - name: VM Creation Notification
+        uses: sroopsai/slack@v1.2.5
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+        if: always()
+        env: 
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: VM Creation Notification
+        uses: sroopsai/slack@v1.2.5
+        with: 
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL2}}
+
+      
+
+    
+
+    
 
 
       
