@@ -31,7 +31,7 @@ jobs:
 
     
     - name: Python Application Build Notification
-      uses: norybybaru/slack@display-commits-on-push
+      uses: norbybaru/slack@display-commits-on-push
       with:
         status: ${{ job.status }}
         steps: ${{ toJson(steps) }}
@@ -40,7 +40,7 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     - name: Python Application Build Notification 
-      uses: norybybaru/slack@display-commits-on-push
+      uses: norbybaru/slack@display-commits-on-push
       with: 
         status: ${{ job.status }}
         steps: ${{ toJson(steps) }}
@@ -69,7 +69,7 @@ jobs:
         docker build . -t filemanagerapp:latest
     
     - name: Docker Application Build Notification
-      uses: norybybaru/slack@display-commits-on-push
+      uses: norbybaru/slack@display-commits-on-push
       with:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
@@ -78,7 +78,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     - name: Docker Application Build Notification
-      uses: norybybaru/slack@display-commits-on-push
+      uses: norbybaru/slack@display-commits-on-push
       with:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
@@ -104,7 +104,7 @@ jobs:
         shell: pwsh
 
       - name: VM Creation Notification
-        uses: norybybaru/slack@display-commits-on-push
+        uses: norbybaru/slack@display-commits-on-push
         with:
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
@@ -113,7 +113,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: VM Creation Notification
-        uses: norybybaru/slack@display-commits-on-push
+        uses: norbybaru/slack@display-commits-on-push
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
