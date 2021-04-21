@@ -137,7 +137,7 @@ class TestClient(unittest.TestCase):
         test_user.register("test8", "rgglherglse9421-4")
         test_user.login("test8", "rgglherglse9421-4")
         test_user.create_folder("movies")
-        expected = "\nSuccessfully Moved to folder Root/test8\movies"
+        expected = "\nSuccessfully Moved to folder Root/test8/movies"
         actual = test_user.change_folder("movies")
         self.assertEqual(expected, actual)
         test_user.quit()
