@@ -3,6 +3,7 @@
 
 import asyncio
 import signal
+import socket
 from commandhandler import CommandHandler
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -82,7 +83,7 @@ async def main():
     """This function starts the connection between the server and client
     """
     
-    server = await asyncio.start_server(handle_client, '127.0.0.1', 8088)
+    server = await asyncio.start_server(handle_client, socket.gethostbyname(socket.gethostname()), 8088)
     server_listening_ip = server.sockets[0].getsockname()
     print(f'Serving on {server_listening_ip}')
     async with server:
