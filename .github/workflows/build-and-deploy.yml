@@ -1,4 +1,4 @@
-name: Build And Deploy
+name: Test And Build
 on:
   push:
     branches: [ master ]
@@ -58,9 +58,7 @@ jobs:
     needs: 
       - build-python-app
     steps:
-    - name: Checkout
-      id: Checkout
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
     - name: Lint Dockerfile
       id: Lint-the-Dockerfile
