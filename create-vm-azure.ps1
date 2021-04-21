@@ -1,4 +1,4 @@
-Write-Ouput "Logging in to Azure with a service principal."
+Write-Output "Logging in to Azure with a service principal."
 az login `
     --service-principal `
     --username $Env:SP_CLIENT_ID `
