@@ -99,7 +99,7 @@ jobs:
           SP_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
           SP_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
           AZURE_SUBSCRIPTION_NAME: ${{ secrets.AZURE_SUBSCRIPTION_NAME }}        
-        run: .\create-vm-.ps1
+        run: .\create-vm-azure.ps1
         shell: pwsh
 
 
